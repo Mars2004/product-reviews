@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductEntity } from './entities/product.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
+import { ProductRepository } from './repositories/product.repository';
 
 @Module({
   imports: [
@@ -32,6 +33,6 @@ import * as Joi from 'joi';
     TypeOrmModule.forFeature([ProductEntity]),
   ],
   controllers: [ProductController],
-  providers: [ProductService],
+  providers: [ProductService, ProductRepository],
 })
 export class ProductModule {}

@@ -1,5 +1,6 @@
 import { IsNotEmpty, IsPositive } from 'class-validator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { ReviewEntity } from '../../review/entities/review.entity';
 
 /**
  * Product entity.
@@ -45,4 +46,31 @@ export class ProductEntity {
   // TODO: Hope there is no product with a negative price.
   @IsPositive()
   price: number;
+
+  /**
+   * The reviews of the product.
+   * One product can have multiple reviews.
+   */
+  @OneToMany(() => ReviewEntity, (review) => review.product)
+  reviews: any[];
+
+  // TODO: It might be a good idea to hold the creation, update and delete (soft delete) dates.
+  // TODO: But it's not required by the task, so it keep it simple.
+  ///**
+  // * The date and time when the bank account was created.
+  // */
+  //@CreateDateColumn()
+  //createdAt: Date;
+
+  ///**
+  // * The date and time when the bank account was last updated.
+  // */
+  //@UpdateDateColumn()
+  //updatedAt: Date;
+
+  ///**
+  // * The date and time when the bank account was deleted.
+  // */
+  //@DeleteDateColumn()
+  //deletedAt?: Date;
 }
