@@ -66,10 +66,30 @@ export class ReviewEntity {
    * The product associated with the product review.
    */
   @Index()
-  @ManyToOne(() => ProductEntity, (product) => product.id, {
+  @ManyToOne(() => ProductEntity, (product) => product.reviews, {
     nullable: false,
     // TODO: Maybe "SET NULL" is a better option here, but it's not required by the task.
     onDelete: 'CASCADE',
   })
   product: ProductEntity;
+
+  // TODO: It might be a good idea to hold the creation, update and delete (soft delete) dates.
+  // TODO: But it's not required by the task, so it keep it simple.
+  ///**
+  // * The date and time when the bank account was created.
+  // */
+  //@CreateDateColumn()
+  //createdAt: Date;
+
+  ///**
+  // * The date and time when the bank account was last updated.
+  // */
+  //@UpdateDateColumn()
+  //updatedAt: Date;
+
+  ///**
+  // * The date and time when the bank account was deleted.
+  // */
+  //@DeleteDateColumn()
+  //deletedAt?: Date;
 }

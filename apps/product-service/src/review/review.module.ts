@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ReviewEntity } from './entities/review.entity';
 import * as Joi from 'joi';
+import { ReviewRepository } from './repositories/review.repository';
 
 @Module({
   imports: [
@@ -32,6 +33,6 @@ import * as Joi from 'joi';
     TypeOrmModule.forFeature([ReviewEntity]),
   ],
   controllers: [ReviewController],
-  providers: [ReviewService],
+  providers: [ReviewService, ReviewRepository],
 })
 export class ReviewModule {}
