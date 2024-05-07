@@ -4,41 +4,32 @@ import { ReviewUpdatedEvent } from '@app/events/dto/review-updated-event.dto';
 import { ReviewEventEnum } from '@app/events/enums/review-event.enum';
 import { validateEvent } from '@app/events/validators/event.validator';
 import { Controller } from '@nestjs/common';
-import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
+import { EventPattern, Payload } from '@nestjs/microservices';
+import { RatingService } from './rating.service';
 
 @Controller()
 export class RatingController {
-  @EventPattern(ReviewEventEnum.Created)
-  async onReviewCreated(@Payload() data: any, @Ctx() context: RmqContext) {
-    const event = await validateEvent(ReviewCreatedEvent, data);
-    console.log(`Message received (${context.getPattern()}): `, event);
-    /*const channel = context.getChannelRef();
-    const originalMsg = context.getMessage();
+  /**
+   * Constructor of the RatingController.
+   * @param ratingService The service that handle the business logic of the average rating.
+   */
+  constructor(private readonly ratingService: RatingService) {}
 
-    channel.ack(originalMsg);*/
+  @EventPattern(ReviewEventEnum.Created)
+  async onReviewCreated(@Payload() data: any) {
+    const event = await validateEvent(ReviewCreatedEvent, data);
+    await this.ratingService.onReviewCreated(event);
   }
 
   @EventPattern(ReviewEventEnum.Updated)
-  async onReviewUpdated(@Payload() data: any, @Ctx() context: RmqContext) {
+  async onReviewUpdated(@Payload() data: any) {
     const event = await validateEvent(ReviewUpdatedEvent, data);
-    console.log(
-      `Received message with pattern ${context.getPattern()}:`,
-      event,
-    );
-    /*const channel = context.getChannelRef();
-    const originalMsg = context.getMessage();
-    //channel.ack(originalMsg);*/
+    await this.ratingService.onReviewUpdated(event);
   }
 
   @EventPattern(ReviewEventEnum.Deleted)
-  async onReviewDeleted(@Payload() data: any, @Ctx() context: RmqContext) {
+  async onReviewDeleted(@Payload() data: any) {
     const event = await validateEvent(ReviewDeletedEvent, data);
-    console.log(
-      `Received message with pattern ${context.getPattern()}:`,
-      event,
-    );
-    /*const channel = context.getChannelRef();
-    const originalMsg = context.getMessage();
-    //channel.ack(originalMsg);*/
+    await this.ratingService.onReviewDeleted(event);
   }
 }
