@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ReviewEntity } from './entities/review.entity';
 import * as Joi from 'joi';
 import { ReviewRepository } from './repositories/review.repository';
+import { EventsModule } from '@app/events';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ReviewRepository } from './repositories/review.repository';
       }),
     }),
     TypeOrmModule.forFeature([ReviewEntity]),
+    EventsModule,
   ],
   controllers: [ReviewController],
   providers: [ReviewService, ReviewRepository],

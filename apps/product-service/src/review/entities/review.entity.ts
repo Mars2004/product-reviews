@@ -73,6 +73,9 @@ export class ReviewEntity {
   })
   product: ProductEntity;
 
+  @Column('uuid')
+  productId: string;
+
   // TODO: It might be a good idea to hold the creation, update and delete (soft delete) dates.
   // TODO: But it's not required by the task, so it keep it simple.
   ///**

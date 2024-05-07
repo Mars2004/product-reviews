@@ -1,14 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { ReviewRepository } from './repositories/review.repository';
 import { ReviewEntity } from './entities/review.entity';
+import { EventsService } from '@app/events';
 
 @Injectable()
 export class ReviewService {
   /**
    * Constructor of the ReviewService.
    * @param reviewRepository The repository that handle the data of product reviews.
+   * @param eventsService The service that handle the events of the application.
    */
-  constructor(private readonly reviewRepository: ReviewRepository) {}
+  constructor(
+    private readonly reviewRepository: ReviewRepository,
+    private readonly eventsService: EventsService,
+  ) {}
 
   /**
    * Create a new review.
@@ -20,7 +25,11 @@ export class ReviewService {
     createReviewDto: Partial<ReviewEntity>,
   ): Promise<ReviewEntity> {
     // TODO: check that the product exists
-    return this.reviewRepository.createReview(createReviewDto);
+    const review = await this.reviewRepository.createReview(createReviewDto);
+
+    await this.eventsService.sendReviewCreated(review.productId);
+
+    return review;
   }
 
   /**
@@ -34,8 +43,14 @@ export class ReviewService {
     id: string,
     updateReviewDto: Partial<ReviewEntity>,
   ): Promise<ReviewEntity | null> {
-    // TODO: do not allow updating the product ID
-    return this.reviewRepository.updateReviewById(id, updateReviewDto);
+    const review = await this.reviewRepository.updateReviewById(
+      id,
+      updateReviewDto,
+    );
+
+    await this.eventsService.sendReviewUpdated(review.productId);
+
+    return review;
   }
 
   /**
@@ -44,7 +59,11 @@ export class ReviewService {
    * @returns A promise that resolves to the deleted ReviewEntity if found, or null if not found.
    */
   async deleteReviewById(id: string): Promise<ReviewEntity | null> {
-    return this.reviewRepository.deleteReviewById(id);
+    const review = await this.reviewRepository.deleteReviewById(id);
+
+    await this.eventsService.sendReviewDeleted(review.productId);
+
+    return review;
   }
 
   /**

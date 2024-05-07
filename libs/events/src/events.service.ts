@@ -18,19 +18,11 @@ export class EventsService {
 
   /**
    * Notify that a review was created.
-   * @param reviewId - The ID of the review that was created.
    * @param productId - The ID of the product that the review was created for.
-   * @param rating - The rating of the review.
    */
-  async sendReviewCreated(
-    reviewId: string,
-    productId: string,
-    rating: number,
-  ): Promise<void> {
+  async sendReviewCreated(productId: string): Promise<void> {
     const payload = validateEvent(ReviewCreatedEvent, {
-      reviewId,
       productId,
-      rating,
     });
 
     this.ratingClient.emit(ReviewEventEnum.Created, payload);
@@ -38,22 +30,11 @@ export class EventsService {
 
   /**
    * Notify that a review was updated.
-   * @param reviewId - The ID of the review that was updated.
    * @param productId - The ID of the product that the review was created for.
-   * @param rating - The new rating of the review.
-   * @param originalRating - The original rating of the review.
    */
-  async sendReviewUpdated(
-    reviewId: string,
-    productId: string,
-    rating: number,
-    originalRating: number,
-  ): Promise<void> {
+  async sendReviewUpdated(productId: string): Promise<void> {
     const payload = await validateEvent(ReviewUpdatedEvent, {
-      reviewId,
       productId,
-      rating,
-      originalRating,
     });
 
     this.ratingClient.emit(ReviewEventEnum.Updated, payload);
@@ -61,19 +42,11 @@ export class EventsService {
 
   /**
    * Notify that a review was deleted.
-   * @param reviewId - The ID of the review that was deleted.
    * @param productId - The ID of the product that the review was created for.
-   * @param rating - The rating of the review.
    */
-  async sendReviewDeleted(
-    reviewId: string,
-    productId: string,
-    rating: number,
-  ): Promise<void> {
+  async sendReviewDeleted(productId: string): Promise<void> {
     const payload = validateEvent(ReviewDeletedEvent, {
-      reviewId,
       productId,
-      rating,
     });
 
     this.ratingClient.emit(ReviewEventEnum.Deleted, payload);

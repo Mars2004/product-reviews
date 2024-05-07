@@ -8,11 +8,11 @@ import { Injectable } from '@nestjs/common';
 export class ReviewRepository {
   /**
    * Constructor of the ReviewRepository.
-   * @param reviewRepository The TypeORM injected repository for the ProductRepository.
+   * @param reviewRepository The TypeORM injected repository for the ReviewRepository.
    */
   constructor(
     /**
-     * The TypeORM injected repository for the ProductRepository.
+     * The TypeORM injected repository for the ReviewRepository.
      */
     @InjectRepository(ReviewEntity)
     private readonly reviewRepository: Repository<ReviewEntity>,
@@ -96,7 +96,6 @@ export class ReviewRepository {
    * @returns A promise that resolves to the ReviewEntity if found, or null if not found.
    */
   async getReviewsByProductId(productId: string): Promise<ReviewEntity[]> {
-    console.log('productId', productId);
     return this.reviewRepository.find({
       where: {
         product: {
