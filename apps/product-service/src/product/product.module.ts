@@ -6,6 +6,7 @@ import { ProductEntity } from './entities/product.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
 import { ProductRepository } from './repositories/product.repository';
+import { RatingEntity } from 'apps/review-service/src/rating/entities/rating.entity';
 
 @Module({
   imports: [
@@ -30,7 +31,7 @@ import { ProductRepository } from './repositories/product.repository';
         synchronize: true,
       }),
     }),
-    TypeOrmModule.forFeature([ProductEntity]),
+    TypeOrmModule.forFeature([ProductEntity, RatingEntity]),
   ],
   controllers: [ProductController],
   providers: [ProductService, ProductRepository],

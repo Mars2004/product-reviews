@@ -57,7 +57,8 @@ export class ProductController {
   async createProduct(
     @Body() createProductDto: CreateProductDto,
   ): Promise<GetProductDto> {
-    return this.productService.createProduct(createProductDto);
+    const product = await this.productService.createProduct(createProductDto);
+    return GetProductDto.fromEntity(product);
   }
 
   @Patch(':id')
@@ -91,8 +92,7 @@ export class ProductController {
       throw new NotFoundException('Product does not exist.');
     }
 
-    // TODO: add average rating calculation
-    return updatedProduct;
+    return GetProductDto.fromEntity(updatedProduct);
   }
 
   @Delete(':id')
@@ -115,8 +115,7 @@ export class ProductController {
       throw new NotFoundException('Product does not exist.');
     }
 
-    // TODO: add average rating calculation
-    return deletedProduct;
+    return GetProductDto.fromEntity(deletedProduct);
   }
 
   @Get('list')
@@ -150,8 +149,7 @@ export class ProductController {
       isNaN(offset) ? 0 : offset,
     );
 
-    // TODO: add average rating calculation
-    return products;
+    return products.map((product) => GetProductDto.fromEntity(product));
   }
 
   @Get(':id')
@@ -174,7 +172,6 @@ export class ProductController {
       throw new NotFoundException('Product does not exist.');
     }
 
-    // TODO: add average rating calculation
-    return product;
+    return GetProductDto.fromEntity(product);
   }
 }

@@ -10,7 +10,7 @@ export class RatingEntity {
   /**
    * The product associated with the product review.
    */
-  @OneToOne(() => ProductEntity)
+  @OneToOne(() => ProductEntity, { onDelete: 'CASCADE' })
   @JoinColumn()
   product: ProductEntity;
 

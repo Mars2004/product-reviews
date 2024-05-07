@@ -51,7 +51,7 @@ export class CreateReviewDto {
   @ApiProperty({
     title: 'Unique identifier of the product.',
     description: 'Must be a unique UUID of the product.',
-    type: 'uuid',
+    type: 'string',
     nullable: false,
     required: true,
   })

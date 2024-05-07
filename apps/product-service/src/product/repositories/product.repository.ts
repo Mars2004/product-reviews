@@ -93,6 +93,8 @@ export class ProductRepository {
       where: {
         id,
       },
+      relations: ['rating'],
+      cache: 60 * 1000, // cache the result for 60 seconds
     });
   }
 
@@ -109,6 +111,8 @@ export class ProductRepository {
     return this.productRepository.find({
       take: limit,
       skip: offset,
+      relations: ['rating'],
+      cache: 60 * 1000, // cache the result for 60 seconds
     });
   }
 

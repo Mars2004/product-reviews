@@ -56,10 +56,10 @@ export class ReviewController {
   async createReview(
     @Body() createReviewDto: CreateReviewDto,
   ): Promise<GetReviewDto> {
-    // TODO: notify review service to update average rating
     const review = await this.reviewService.createReview(
       CreateReviewDto.toEntity(createReviewDto),
     );
+
     return GetReviewDto.fromEntity(review);
   }
 
@@ -98,7 +98,6 @@ export class ReviewController {
       throw new NotFoundException('Product review does not exist.');
     }
 
-    // TODO: notify review service to update average rating
     return GetReviewDto.fromEntity(updatedReview);
   }
 
@@ -125,7 +124,6 @@ export class ReviewController {
       throw new NotFoundException('Product review does not exist.');
     }
 
-    // TODO: notify review service to update average rating
     return GetReviewDto.fromEntity(deletedReview);
   }
 

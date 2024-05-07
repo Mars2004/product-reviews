@@ -1,6 +1,13 @@
 import { IsNotEmpty, IsPositive } from 'class-validator';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { ReviewEntity } from '../../review/entities/review.entity';
+import { RatingEntity } from 'apps/review-service/src/rating/entities/rating.entity';
 
 /**
  * Product entity.
@@ -53,6 +60,13 @@ export class ProductEntity {
    */
   @OneToMany(() => ReviewEntity, (review) => review.product)
   reviews: any[];
+
+  /**
+   * The rating of the product.
+   * One product can have only one rating.
+   */
+  @OneToOne(() => RatingEntity, (rating) => rating.product)
+  rating: RatingEntity;
 
   // TODO: It might be a good idea to hold the creation, update and delete (soft delete) dates.
   // TODO: But it's not required by the task, so it keep it simple.
