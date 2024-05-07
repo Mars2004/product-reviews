@@ -14,6 +14,9 @@ import { ProductEntity } from 'apps/product-service/src/product/entities/product
     ConfigModule.forRoot({
       validationSchema: Joi.object({
         API_DATABASE_URL: Joi.string().required(),
+        REDIS_HOST: Joi.string().required(),
+        REDIS_PORT: Joi.number().required(),
+        REDIS_PASSWORD: Joi.string().required(),
       }),
       validationOptions: {
         allowUnknown: true,
@@ -30,6 +33,14 @@ import { ProductEntity } from 'apps/product-service/src/product/entities/product
         // TODO: Synchronize entities with the database schema.
         // TODO: Great for development, but migrations might be better for production.
         synchronize: true,
+        cache: {
+          type: 'ioredis',
+          options: {
+            host: configService.get<string>('REDIS_HOST'),
+            port: configService.get<number>('REDIS_PORT'),
+            password: configService.get<string>('REDIS_PASSWORD'),
+          },
+        },
       }),
     }),
     TypeOrmModule.forFeature([RatingEntity, ReviewEntity, ProductEntity]),

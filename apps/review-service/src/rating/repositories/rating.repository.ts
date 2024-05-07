@@ -67,6 +67,7 @@ export class RatingRepository {
       where: {
         productId,
       },
+      cache: 60 * 1000, // cache the result for 1 minute
     });
   }
 
