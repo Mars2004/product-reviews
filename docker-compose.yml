@@ -19,3 +19,13 @@ services:
       - REDIS_PASSWORD=kZgJ06oV9zN
     ports:
       - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=oV906oZgJ0
+    ports:
+      - "5672:5672"
+      - "15672:15672"
