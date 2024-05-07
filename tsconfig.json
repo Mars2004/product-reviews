@@ -17,6 +17,13 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
-    "paths": {}
+    "paths": {
+      "@app/events": [
+        "libs/events/src"
+      ],
+      "@app/events/*": [
+        "libs/events/src/*"
+      ]
+    }
   }
 }

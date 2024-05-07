@@ -27,6 +27,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/review-service/tsconfig.app.json"
       }
+    },
+    "events": {
+      "type": "library",
+      "root": "libs/events",
+      "entryFile": "index",
+      "sourceRoot": "libs/events/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/events/tsconfig.lib.json"
+      }
     }
   }
 }
