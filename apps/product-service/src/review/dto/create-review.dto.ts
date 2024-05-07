@@ -38,13 +38,13 @@ export class CreateReviewDto {
   @ApiProperty({
     title: 'Product review rating',
     description:
-      'The number between 0 and 5 representing the product review rating.',
+      'The number between 1 and 5 representing the product review rating.',
     type: 'number',
     nullable: false,
     required: true,
   })
   @IsInt()
-  @Min(0)
+  @Min(1)
   @Max(5)
   rating: number;
 

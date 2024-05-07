@@ -51,14 +51,14 @@ export class ReviewEntity {
 
   /**
    * The product review rating.
-   * The rating is a number between 0 and 5.
+   * The rating is a number between 1 and 5.
    */
   @Column({
     type: 'int',
     nullable: false,
   })
   @IsInt()
-  @Min(0)
+  @Min(1)
   @Max(5)
   rating: number;
 
