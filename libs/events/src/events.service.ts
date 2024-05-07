@@ -1,11 +1,10 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { ReviewEventEnum } from './enums/review-event.enum';
 import { ReviewCreatedEvent } from './dto/review-created-event.dto';
-import { plainToClass } from 'class-transformer';
-import { validate } from 'class-validator';
 import { ReviewUpdatedEvent } from './dto/review-updated-event.dto';
 import { ReviewDeletedEvent } from './dto/review-deleted-event.dto';
+import { validateEvent } from './validators/event.validator';
 
 @Injectable()
 export class EventsService {
@@ -28,16 +27,11 @@ export class EventsService {
     productId: string,
     rating: number,
   ): Promise<void> {
-    const payload = plainToClass(ReviewCreatedEvent, {
+    const payload = validateEvent(ReviewCreatedEvent, {
       reviewId,
       productId,
       rating,
     });
-
-    const errors = await validate(payload);
-    if (errors.length > 0) {
-      throw new BadRequestException(errors);
-    }
 
     this.ratingClient.emit(ReviewEventEnum.Created, payload);
   }
@@ -55,17 +49,12 @@ export class EventsService {
     rating: number,
     originalRating: number,
   ): Promise<void> {
-    const payload = plainToClass(ReviewUpdatedEvent, {
+    const payload = await validateEvent(ReviewUpdatedEvent, {
       reviewId,
       productId,
       rating,
       originalRating,
     });
-
-    const errors = await validate(payload);
-    if (errors.length > 0) {
-      throw new BadRequestException(errors);
-    }
 
     this.ratingClient.emit(ReviewEventEnum.Updated, payload);
   }
@@ -81,16 +70,11 @@ export class EventsService {
     productId: string,
     rating: number,
   ): Promise<void> {
-    const payload = plainToClass(ReviewDeletedEvent, {
+    const payload = validateEvent(ReviewDeletedEvent, {
       reviewId,
       productId,
       rating,
     });
-
-    const errors = await validate(payload);
-    if (errors.length > 0) {
-      throw new BadRequestException(errors);
-    }
 
     this.ratingClient.emit(ReviewEventEnum.Deleted, payload);
   }
