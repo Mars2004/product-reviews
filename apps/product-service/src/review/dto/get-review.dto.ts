@@ -23,7 +23,7 @@ export class GetReviewDto extends CreateReviewDto {
       lastName: entity.lastName,
       reviewText: entity.reviewText,
       rating: entity.rating,
-      productId: entity.product.id,
+      productId: entity.product?.id,
     };
   }
 }

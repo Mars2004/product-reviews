@@ -33,7 +33,7 @@ export class GetProductDto extends CreateProductDto {
       name: entity.name,
       description: entity.description,
       price: entity.price,
-      averageRating: entity.rating.rating,
+      averageRating: entity.rating?.rating,
     };
   }
 }

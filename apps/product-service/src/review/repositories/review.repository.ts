@@ -55,7 +55,6 @@ export class ReviewRepository {
       where: {
         id,
       },
-      relations: ['product'],
     });
 
     if (!review) {
@@ -78,7 +77,6 @@ export class ReviewRepository {
       where: {
         id,
       },
-      relations: ['product'],
     });
 
     if (!review) {
@@ -98,11 +96,8 @@ export class ReviewRepository {
   async getReviewsByProductId(productId: string): Promise<ReviewEntity[]> {
     return this.reviewRepository.find({
       where: {
-        product: {
-          id: productId,
-        },
+        productId,
       },
-      relations: ['product'],
       cache: 60 * 1000, // cache the result for 1 minute
     });
   }

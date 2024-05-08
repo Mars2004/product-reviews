@@ -58,14 +58,14 @@ export class ProductEntity {
    * The reviews of the product.
    * One product can have multiple reviews.
    */
-  @OneToMany(() => ReviewEntity, (review) => review.product)
-  reviews: any[];
+  @OneToMany(() => ReviewEntity, (review) => review?.product)
+  reviews: ReviewEntity[];
 
   /**
    * The rating of the product.
    * One product can have only one rating.
    */
-  @OneToOne(() => RatingEntity, (rating) => rating.product)
+  @OneToOne(() => RatingEntity, (rating) => rating?.product)
   rating: RatingEntity;
 
   // TODO: It might be a good idea to hold the creation, update and delete (soft delete) dates.

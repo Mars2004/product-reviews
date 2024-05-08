@@ -66,7 +66,7 @@ export class ReviewEntity {
    * The product associated with the product review.
    */
   @Index()
-  @ManyToOne(() => ProductEntity, (product) => product.reviews, {
+  @ManyToOne(() => ProductEntity, (product) => product?.reviews, {
     nullable: false,
     // TODO: Maybe "SET NULL" is a better option here, but it's not required by the task.
     onDelete: 'CASCADE',
