@@ -2,10 +2,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ReviewEntity } from '../entities/review.entity';
 import { validate } from 'class-validator';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class ReviewRepository {
+  /**
+   * Logger instance of the RatingController.
+   */
+  private readonly logger = new Logger(ReviewRepository.name);
+
   /**
    * Constructor of the ReviewRepository.
    * @param reviewRepository The TypeORM injected repository for the ReviewRepository.
@@ -105,8 +110,8 @@ export class ReviewRepository {
   protected async validateReview(review: ReviewEntity): Promise<void> {
     const errors = await validate(review);
     if (errors.length > 0) {
-      // TODO: make it better!!!!!
-      throw new Error(`Validation failed!`);
+      this.logger.error({ message: `Review validation failed!`, errors });
+      throw new Error(`Review validation failed!`);
     }
   }
 }

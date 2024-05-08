@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  Logger,
   NotFoundException,
   Param,
   Patch,
@@ -26,6 +27,11 @@ import { UpdateProductDto } from './dto/update-product.dto';
 @ApiTags('Product')
 @Controller('product')
 export class ProductController {
+  /**
+   * Logger instance of the ProductController.
+   */
+  private readonly logger = new Logger(ProductController.name);
+
   /**
    * Constructor of the ProductController.
    * @param productService The service that handle the business logic of the product.
@@ -57,7 +63,15 @@ export class ProductController {
   async createProduct(
     @Body() createProductDto: CreateProductDto,
   ): Promise<GetProductDto> {
+    this.logger.log({
+      message: 'Creating new product',
+      data: createProductDto,
+    });
+
     const product = await this.productService.createProduct(createProductDto);
+
+    this.logger.log({ message: 'Product created', data: product });
+
     return GetProductDto.fromEntity(product);
   }
 
@@ -84,6 +98,11 @@ export class ProductController {
     @Param('id') id: string,
     @Body() updateProductDto: UpdateProductDto,
   ): Promise<GetProductDto | null> {
+    this.logger.log({
+      message: 'Updating product',
+      data: updateProductDto,
+    });
+
     const updatedProduct = await this.productService.updateProductById(
       id,
       updateProductDto,
@@ -91,6 +110,8 @@ export class ProductController {
     if (!updatedProduct) {
       throw new NotFoundException('Product does not exist.');
     }
+
+    this.logger.log({ message: 'Product updated', data: updatedProduct });
 
     return GetProductDto.fromEntity(updatedProduct);
   }
@@ -110,10 +131,14 @@ export class ProductController {
   @ApiResponse({ status: 404, description: 'Product does not exist.' })
   @ApiResponse({ status: 500, description: 'Internal server error.' })
   async deleteProduct(@Param('id') id: string): Promise<GetProductDto | null> {
+    this.logger.log({ message: 'Deleting product', data: id });
+
     const deletedProduct = await this.productService.deleteProductById(id);
     if (!deletedProduct) {
       throw new NotFoundException('Product does not exist.');
     }
+
+    this.logger.log({ message: 'Product deleted', data: deletedProduct });
 
     return GetProductDto.fromEntity(deletedProduct);
   }

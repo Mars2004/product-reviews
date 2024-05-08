@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { ReviewServiceModule } from './app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
+import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
   const appContext =
@@ -24,6 +25,10 @@ async function bootstrap() {
     },
   );
 
+  // inject Logger instance
+  app.useLogger(app.get(Logger));
+
+  // start microservice
   await app.listen();
 }
 bootstrap();

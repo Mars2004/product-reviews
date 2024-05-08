@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  Logger,
   NotFoundException,
   Param,
   Patch,
@@ -24,6 +25,11 @@ import { UpdateReviewDto } from './dto/update-review.dto';
 @ApiTags('Product Reviews')
 @Controller('review')
 export class ReviewController {
+  /**
+   * Logger instance of the ReviewController.
+   */
+  private readonly logger = new Logger(ReviewController.name);
+
   /**
    * Constructor of the ReviewController.
    * @param reviewService The service that handle the business logic of the product reviews.
@@ -56,9 +62,19 @@ export class ReviewController {
   async createReview(
     @Body() createReviewDto: CreateReviewDto,
   ): Promise<GetReviewDto> {
+    this.logger.log({
+      message: 'Received request to create new product review',
+      data: createReviewDto,
+    });
+
     const review = await this.reviewService.createReview(
       CreateReviewDto.toEntity(createReviewDto),
     );
+
+    this.logger.log({
+      message: 'Product review created successfully',
+      data: review,
+    });
 
     return GetReviewDto.fromEntity(review);
   }
@@ -90,6 +106,11 @@ export class ReviewController {
     @Param('id') id: string,
     @Body() updateReviewDto: UpdateReviewDto,
   ): Promise<GetReviewDto | null> {
+    this.logger.log({
+      message: 'Received request to update product review',
+      data: updateReviewDto,
+    });
+
     const updatedReview = await this.reviewService.updateReviewById(
       id,
       updateReviewDto,
@@ -97,6 +118,11 @@ export class ReviewController {
     if (!updatedReview) {
       throw new NotFoundException('Product review does not exist.');
     }
+
+    this.logger.log({
+      message: 'Product review updated successfully',
+      data: updatedReview,
+    });
 
     return GetReviewDto.fromEntity(updatedReview);
   }
@@ -119,10 +145,20 @@ export class ReviewController {
   @ApiResponse({ status: 404, description: 'Product review does not exist.' })
   @ApiResponse({ status: 500, description: 'Internal server error.' })
   async deleteReview(@Param('id') id: string): Promise<GetReviewDto | null> {
+    this.logger.log({
+      message: 'Received request to delete product review',
+      data: { id },
+    });
+
     const deletedReview = await this.reviewService.deleteReviewById(id);
     if (!deletedReview) {
       throw new NotFoundException('Product review does not exist.');
     }
+
+    this.logger.log({
+      message: 'Product review deleted successfully',
+      data: deletedReview,
+    });
 
     return GetReviewDto.fromEntity(deletedReview);
   }

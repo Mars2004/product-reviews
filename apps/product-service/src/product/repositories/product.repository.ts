@@ -2,10 +2,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProductEntity } from '../entities/product.entity';
 import { validate } from 'class-validator';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class ProductRepository {
+  /**
+   * Logger instance of the RatingController.
+   */
+  private readonly logger = new Logger(ProductRepository.name);
+
   /**
    * Constructor of the ProductRepository.
    * @param productRepository The TypeORM injected repository for the ProductRepository.
@@ -119,8 +124,8 @@ export class ProductRepository {
   protected async validateProduct(product: ProductEntity): Promise<void> {
     const errors = await validate(product);
     if (errors.length > 0) {
-      // TODO: make it better!!!!!
-      throw new Error(`Validation failed!`);
+      this.logger.error({ message: `Product validation failed!`, errors });
+      throw new Error(`Product validation failed!`);
     }
   }
 }

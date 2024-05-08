@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import { Logger } from 'nestjs-pino';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const appVersion = require('../../../package.json').version;
@@ -29,6 +30,9 @@ async function bootstrap() {
     document.security = [{ api_key: [] }];
     SwaggerModule.setup('swagger', app, document);
   }
+
+  // inject Logger instance
+  app.useLogger(app.get(Logger));
 
   // start application on given port
   await app.listen(configService.get<number>('PORT'));
