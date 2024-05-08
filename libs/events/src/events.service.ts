@@ -21,7 +21,7 @@ export class EventsService {
    * @param productId - The ID of the product that the review was created for.
    */
   async sendReviewCreated(productId: string): Promise<void> {
-    const payload = validateEvent(ReviewCreatedEvent, {
+    const payload = await validateEvent(ReviewCreatedEvent, {
       productId,
     });
 
@@ -45,7 +45,7 @@ export class EventsService {
    * @param productId - The ID of the product that the review was created for.
    */
   async sendReviewDeleted(productId: string): Promise<void> {
-    const payload = validateEvent(ReviewDeletedEvent, {
+    const payload = await validateEvent(ReviewDeletedEvent, {
       productId,
     });
 
