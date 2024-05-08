@@ -18,12 +18,23 @@ $ npm install
 ```
 
 ## Prepare local environment
+
 ```bash
 # initialize docker images/containers
 $ docker-compose up -d
 ```
 
-## Running the app
+## Running the app (docker/docker-compose)
+
+To run all dependencies (PostgreSQL, Redis, RabbitMQ), build dockers for both services and rum them (review-service in two instances)
+use the command below.
+
+```bash
+# initialize docker images/containers
+$ docker-compose up -d --scale review-service=2
+```
+
+## Running the app (local)
 
 ```bash
 # development
