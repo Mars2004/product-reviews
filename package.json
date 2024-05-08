@@ -83,7 +83,8 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
-      "^@app/events(|/.*)$": "<rootDir>/libs/events/src/$1"
+      "^@app/events(|/.*)$": "<rootDir>/libs/events/src/$1",
+      "^apps/(.*)": "<rootDir>/apps/$1"
     }
   }
 }

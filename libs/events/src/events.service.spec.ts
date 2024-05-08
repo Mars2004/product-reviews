@@ -6,7 +6,15 @@ describe('EventsService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [EventsService],
+      providers: [
+        EventsService,
+        {
+          provide: 'RatingServiceClient',
+          useValue: {
+            emit: jest.fn(),
+          },
+        },
+      ],
     }).compile();
 
     service = module.get<EventsService>(EventsService);
